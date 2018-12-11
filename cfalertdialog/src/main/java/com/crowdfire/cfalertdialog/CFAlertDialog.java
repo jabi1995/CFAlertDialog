@@ -49,6 +49,10 @@ import java.util.List;
 
 public class CFAlertDialog extends AppCompatDialog {
 
+    //region booleans
+    private boolean isStartAnimationSet;
+    private boolean isEndAnimaionSet;
+    
     // region Enums
 
     public enum CFAlertStyle {
@@ -270,9 +274,10 @@ public class CFAlertDialog extends AppCompatDialog {
     @Override
     public void show() {
         super.show();
-
+        if (isStartAnimationSet) { 
         // Perform the present animation
         startPresentAnimation();
+        }
     }
 
     @Override
@@ -281,8 +286,10 @@ public class CFAlertDialog extends AppCompatDialog {
         // Disable the view when being dismissed
         setEnabled(false);
 
+        if (isEndAnimationSet) {
         // perform the dismiss animation
         startDismissAnimation();
+        }
 
     }
 
@@ -887,7 +894,7 @@ public class CFAlertDialog extends AppCompatDialog {
     public static class Builder {
 
         private DialogParams params;
-
+       
         public Builder(Context context) {
             params = new DialogParams();
             this.params.context = context;
@@ -1061,6 +1068,15 @@ public class CFAlertDialog extends AppCompatDialog {
             return this;
         }
 
+        /**
+        Setup if Animatin in start or Stop needs
+        **/
+        public Builder isAnimatinStart(boolean start, boolean end) {
+            this.params.isStartAnimationSet = start;
+            this.params.isEndAnimaionSet = end;
+            return this;
+        }
+        
         public CFAlertDialog create() {
             CFAlertDialog cfAlertDialog;
             if (params.theme == 0) {
